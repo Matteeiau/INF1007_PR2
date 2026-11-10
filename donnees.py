@@ -1,4 +1,5 @@
 import pandas as pd
+from sklearn.model_selection import train_test_split
 import config as cfg
 import exceptions as exc
 
@@ -39,3 +40,46 @@ def nettoyer(df, colonnes_num, colonnes_cat, cible):
     df = nettoyer_categories(df, colonnes_cat)
     df = supprimer_lignes_invalides(df, colonnes_num + [cible])
     return df
+
+def separer(df, proportion_test, graine) : 
+    if not 0 < proportion_test < 1 : raise ValueError("proportion_test doit etre compris entre 0 et 1")
+    train, test = train_test_split(df, test_size=proportion_test, random_state=graine) 
+    return train, test
+
+def _preparer_dossier(chemin_sortie) :
+    dossier = os.path.dirname(chemin_sortie)
+    if dossier:
+        os.makedirs(dossier, exist_ok=True)
+ 
+ 
+def tracer_distribution_cible(df, cible, chemin_sortie) :
+    _preparer_dossier(chemin_sortie)
+    valeurs = df[cible]
+ 
+    fig, ax = plt.subplots(figsize=(8, 5))
+    ax.hist(valeurs, bins=30, edgecolor="white")
+    ax.axvline(valeurs.mean(), color="red", linestyle="--",
+               label=f"Moyenne = {valeurs.mean():.1f}")
+    ax.set_title(f"Distribution de « {cible} » ({len(valeurs)} jeux)")
+    ax.set_xlabel(cible)
+    ax.set_ylabel("Nombre de jeux")
+    ax.legend()
+    fig.tight_layout()
+    fig.savefig(chemin_sortie, dpi=150)
+    plt.close(fig)
+ 
+ 
+def tracer_cible_par_categorie(df, colonne_cat, cible, chemin_sortie, max_categories):
+    _preparer_dossier(chemin_sortie)
+    principales = df[colonne_cat].value_counts().index[:max_categories]
+    groupes = [df.loc[df[colonne_cat] == cat, cible] for cat in principales]
+ 
+    fig, ax = plt.subplots(figsize=(10, 5))
+    ax.boxplot(groupes, tick_labels=list(principales))
+    ax.set_title(f"{cible} selon {colonne_cat} ({max_categories} plus fréquentes)")
+    ax.set_xlabel(colonne_cat)
+    ax.set_ylabel(cible)
+    ax.tick_params(axis="x", rotation=45)
+    fig.tight_layout()
+    fig.savefig(chemin_sortie, dpi=150)
+    plt.close(fig)
