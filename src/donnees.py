@@ -1,7 +1,8 @@
+import os
 import pandas as pd
+import matplotlib.pyplot as plt
 from sklearn.model_selection import train_test_split
-import config as cfg
-import exceptions as exc
+import src.exceptions as exc
 
 def charger_csv(chemin: str) :
     if not os.path.exists(chemin): 
@@ -31,7 +32,7 @@ def nettoyer_categories(df, colonnes) :
 
 def supprimer_lignes_invalides(df, colonnes) : 
     df = df.dropna(subset=colonnes)
-    df = df.drop_dupicates()
+    df = df.drop_duplicates()
     return df 
 
 def nettoyer(df, colonnes_num, colonnes_cat, cible):
@@ -69,7 +70,7 @@ def tracer_distribution_cible(df, cible, chemin_sortie) :
     plt.close(fig)
  
  
-def tracer_cible_par_categorie(df, colonne_cat, cible, chemin_sortie, max_categories):
+def tracer_cible_par_categorie(df, colonne_cat, cible, chemin_sortie, max_categories=10):
     _preparer_dossier(chemin_sortie)
     principales = df[colonne_cat].value_counts().index[:max_categories]
     groupes = [df.loc[df[colonne_cat] == cat, cible] for cat in principales]
