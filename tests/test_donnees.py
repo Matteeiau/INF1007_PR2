@@ -77,3 +77,19 @@ def test_graphiques_crees(df_100, tmp_path) -> None:
     donnees.tracer_distribution_cible(df_100, "metascore", str(chemin1))
     donnees.tracer_cible_par_categorie(df_100, "genre", "metascore", str(chemin2))
     assert chemin1.exists() and chemin2.exists()
+
+
+def test_extraire_variables_multiples() -> None:
+    df = pd.DataFrame({
+        "platforms": ["PS3,Xbox 360,PC", "Wii", None],
+        "publisher": ["Nintendo, iQue", "Sega", "Sony"],
+    })
+    res = donnees.extraire_variables_multiples(
+        df, {"platforms": "plateforme", "publisher": "editeur", "absente": "x"}
+    )
+    assert list(res["plateforme"][:2]) == ["PS3", "Wii"]
+    assert list(res["nb_plateformes"][:2]) == [3, 1]
+    assert res["editeur"][0] == "Nintendo" and res["nb_editeurs"][0] == 2
+    assert pd.isna(res["nb_plateformes"][2])   # valeur manquante → NaN, retirée au nettoyage
+    assert "x" not in res.columns               # colonne source absente ignorée
+    assert "plateforme" not in df.columns       # le DataFrame d'origine n'est pas modifié
