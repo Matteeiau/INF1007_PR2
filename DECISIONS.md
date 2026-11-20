@@ -25,7 +25,6 @@ Les cases entre crochets `[ ]` sont à compléter (chiffres mesurés sur le vrai
 | **Implémentation** | `LinearRegression` de scikit-learn ; NumPy | **NumPy** (`np.linalg.solve`). Elle couvre le chapitre 12 et l'annexe D. Un test vérifie que les coefficients sont égaux à ceux de scikit-learn. |
 | **Encodage** | One-hot complet ; 40, 150 catégories | **One-hot des 150 catégories les plus fréquentes**, les autres regroupées dans « Autre ». La catégorie de référence n'a pas de colonne, pour que $X^TX$ reste inversible. MAE : 40 → [x], 150 → [y]. |
 | **Régularisation** | `LAMBDA` = 0 ; 0,1 ; 1 ; 10 ; 100 | **Ridge, `LAMBDA` = 0,1.** Réduit les coefficients des catégories rares. MAE : [valeurs mesurées]. |
-| **Retour vers la moyenne** | Étirer les prédictions ; ajouter des variables | **Accepté et expliqué.** Pour les moindres carrés, $\operatorname{Var}(\hat y) = R^2 \operatorname{Var}(y)$. Étirer les prédictions aurait dégradé la MAE. |
 
 ## Conception et interface
 
