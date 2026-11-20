@@ -29,4 +29,4 @@ PROPORTION_TEST = 0.2
 GRAINE = 42
 
 # --- Modèle ---
-LAMBDA = 0.1  # pénalité Ridge ; 0 = régression linéaire simple
+LAMBDA = 0  # pénalité Ridge ; 0 = régression linéaire simple

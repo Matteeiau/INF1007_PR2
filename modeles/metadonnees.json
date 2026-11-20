@@ -481,8 +481,8 @@
     "editeur": "Autre"
   },
   "metriques": {
-    "mae_modele": 8.631320939973376,
-    "r2_modele": 0.21469155140745444,
+    "mae_modele": 8.633188352848366,
+    "r2_modele": 0.21440422068632492,
     "mae_reference": 9.718287652482763,
     "r2_reference": -5.9562766788756605e-05,
     "n_train": 10629.0,

@@ -10,7 +10,7 @@ brut = extraire_variables_multiples(charger_csv(cfg.CHEMIN_CSV), cfg.COLONNES_MU
 propre = nettoyer(brut, cfg.COLONNES_NUM, cfg.COLONNES_CAT, cfg.CIBLE)
 
 # Chercher un jeu par son titre (nettoyer garde les mêmes index que brut)
-idx = brut.index[brut["title"].str.contains("Zelda", case=False)]
+idx = brut.index[brut["title"].str.contains("zelda", case=False)]
 lignes = propre.loc[propre.index.intersection(idx)]
 
 prediction = modele.predire(encodeur.transformer(lignes))
